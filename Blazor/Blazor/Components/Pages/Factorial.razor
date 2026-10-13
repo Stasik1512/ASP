@@ -1,0 +1,16 @@
+﻿@page "/Factorial"
+@rendermode InteractiveServer
+
+<PageTitle>Factorial</PageTitle>
+
+<hr />
+<h3>Factorial</h3>
+<div class="factorial">
+		<input type="number" @bind="n" @bind:after="Calculate" />
+		<h3> @n! = @f</h3>
+	@* <button @onclick="Calculate" class="btn btn-primary"> Вычислить</button> *@
+</div>
+<hr />
+@code 
+{
+}

@@ -1,0 +1,22 @@
+﻿.factorial, .factorial > div 
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .factorial > div 
+    {
+        width:20%;
+    }
+
+    .factorial h3 
+    {
+        margin: 16px;
+    }
+
+    .factorial input 
+    {
+        font-size: 24px;
+        width: 80px;
+    }

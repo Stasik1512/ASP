@@ -1,0 +1,17 @@
+﻿@page "/Power"
+@rendermode InteractiveServer
+
+<PageTitle>Power</PageTitle>
+
+<h3>Power</h3>
+<hr />
+<h2>Введите число: </h2>
+
+<input type="number" @bind="num" @bind:after="PowerNum"/>
+<br />
+<br />  
+<h2>Введите степень:</h2>
+<input type="number" @bind="pow" @bind:after="PowerNum" />
+<br />
+<h2> Результат: @result</h2>
+
