@@ -5,7 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 namespace Movies.Models
 
 {
-    public class Model
+    public class Movie
     {
         public int Id { get; set; }
         public string Title {  get; set; }
