@@ -1,9 +1,13 @@
-﻿@page "/Dec2Bin" 
+﻿@rendermode InteractiveServer
+@page "/Dec2Bin" 
 @* 10->2 *@
 
-<h3>Dec2Bin</h3>
+<PageTitle>Dec2Bin</PageTitle>
 
-@code 
-{
-
-}
+<h2>Из Десятичной системы счисления в Двоичную систему счисления</h2>
+<hr />
+<h3>Введите число в десятичной системе счисления</h3>
+<input type="text" @bind="num" @bind:after="Dec2Bin_"/>
+<br />
+<br />
+<h2>Результат: @result</h2>

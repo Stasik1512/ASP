@@ -1,8 +1,13 @@
-﻿@page "/Hex2Dec" 
+﻿@rendermode InteractiveServer
+@page "/Hex2Dec" 
 @* 16-10 *@
 
-<h3>Hex2Dec</h3>
+<PageTitle>Hex2Dec</PageTitle>
 
-@code {
-
-}
+<h2>Из Шеснадцатеричной системы счисления в Десятичную систему счисления</h2>
+<hr />
+<h3>Введиет число в  шеснадцатиречной системе</h3>
+<input type="text" @bind="num" @bind:after="Hex2Dec_"/>
+<br />
+<br />
+<h3>Результат @result</h3>
