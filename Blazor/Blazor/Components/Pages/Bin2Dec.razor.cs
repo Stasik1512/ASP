@@ -4,8 +4,8 @@ namespace Blazor.Components.Pages
 {
     public partial class Bin2Dec
     {
-        private string num = "";
-        private string result = "";
+        string num = "";
+        string result = "";
 
         void Bin2Dec_()
         {

@@ -1,9 +1,14 @@
-﻿@page "/Dec2Hex" 
+﻿@rendermode InteractiveServer
+@page "/Dec2Hex" 
 @* 10->16 *@
+
+<PageTitle>Dec2Hex</PageTitle>
 
 <h3>Dec2Hex</h3>
 
-@code 
-{
+<h3>Введите число в десятичной системе счисления</h3>
+<input type="text" @bind="num" @bind:after="Dec2Hex_"/>
+<br />
+<br />
+<h3>Результат @result</h3>
 
-}
