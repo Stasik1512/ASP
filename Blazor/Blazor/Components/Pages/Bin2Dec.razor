@@ -1,0 +1,14 @@
+﻿@rendermode InteractiveServer
+@page "/Bin2Dec" 
+@* 2->10 *@
+
+<PageTitle>Bin2Dex</PageTitle>
+
+<h3>Bin2Dec</h3>
+
+<h3>Введите число в двоичной системе счисления</h3>
+<input type="text" @bind="num" @bind:after="Bin2Dec_"/>
+<br />
+<br />
+<h3>Результат: @result </h3>
+
