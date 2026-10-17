@@ -2,10 +2,16 @@ using Movies.Components;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContextFactory<MoviesContext>
+    (
+        option =>
+        option.UseSqlServer(builder.Configuration.GetConnectionString("MoviesContext"))
+    );
 
+builder.Services.AddQuickGridEntityFrameworkAdapter();
 // Add services to the container.
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+.AddInteractiveServerComponents();
 
 var app = builder.Build();
 
