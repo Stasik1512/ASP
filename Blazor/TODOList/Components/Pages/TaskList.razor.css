@@ -1,0 +1,15 @@
+﻿ul
+{
+	list-style: none;  
+}
+input[type=checkbox]:checked + label
+{
+	color: grey;
+	text-decoration:line-through;
+
+}
+.statistic
+{
+	display:flex;
+	justify-content:space-between;
+}

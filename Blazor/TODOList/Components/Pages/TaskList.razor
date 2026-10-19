@@ -4,12 +4,15 @@
 
 <h3>TaskList</h3>
 
-<input  type="text" @bind="description"/>
-<input type="button" value="Добавить" @onclick="AddTask" class="btn btn-primary"/>
-
+<div class="statistic">
+	<h5>Всего: @tasklist.Count</h5>
+	<h5>Выполнено: @tasklist.Where(t => t.DONE == true).ToList().Count</h5>
+	<h5>Осталось: @tasklist.Where(t => t.DONE == false).ToList().Count</h5>
+</div>
 <hr />
 
-<h5>Всего: @tasklist.Count</h5>
+<input  type="text" @bind="description"/>
+<input type="button" value="Добавить" @onclick="AddTask" class="btn btn-primary"/>
 
 <hr />
 
@@ -17,12 +20,21 @@
 <ul>
 	@foreach(TODO item in tasklist)
 	{
-		<li>@item.Description</li>
+		<li>
+			<input type="checkbox" id="@item.Description" @bind="@item.DONE"/>
+			<label for="@item.Description">@item.Description</label>
+		</li>
 	}
 </ul>
 @code 
 {
-	List<Models.TODO> tasklist = [];
+	// List<Models.TODO> tasklist = [];
+	List<Models.TODO> tasklist =
+		[
+		new TODO {Description = "Полить цветы"},
+		new TODO {Description = "Покормить животных"},
+		new TODO {Description = "Сделать дз"},
+	];
 	string description = "";
 	void AddTask()
 	{
