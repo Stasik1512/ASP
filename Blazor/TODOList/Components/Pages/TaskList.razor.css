@@ -2,6 +2,18 @@
 {
 	list-style: none;  
 }
+li:hover
+{
+	background-color: lightgray;
+}
+li > button
+{
+	visibility: hidden;
+}
+li:hover > button
+{
+	visibility: visible;
+}
 input[type=checkbox]:checked + label
 {
 	color: grey;
@@ -12,4 +24,8 @@ input[type=checkbox]:checked + label
 {
 	display:flex;
 	justify-content:space-between;
+}
+label
+{
+	width: 90%;
 }
