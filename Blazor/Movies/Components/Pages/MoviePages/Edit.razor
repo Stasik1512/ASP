@@ -43,7 +43,7 @@ else
                             <ValidationMessage For="() => Movie.Poster" class="text-danger" />
                         </div>
                     </div>
-                    <img src="@Movie.Poster" />
+                    <div class="img-container"><img src="@Movie.Poster" /></div>
                 </div>
                 <button type="submit" class="btn btn-primary">Save</button>
             </EditForm>
@@ -96,7 +96,8 @@ else
             }
         }
 
-        NavigationManager.NavigateTo("/movies");
+        NavigationManager.NavigateTo($"/movies/details?id={Movie.Id}");
+        // NavigationManager.NavigateTo("/movies");
     }
 
     private bool MovieExists(int id)
