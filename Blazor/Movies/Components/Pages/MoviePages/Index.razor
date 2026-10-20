@@ -5,18 +5,22 @@
 @implements IAsyncDisposable
 @inject IDbContextFactory<MoviesContext> DbFactory
 @inject NavigationManager NavigationManager
+@rendermode InteractiveServer
 
 <PageTitle>Index</PageTitle>
 
 <div class="controls">
-    <h1>Index</h1>
-
-    <p>
+    <h1>Киношки</h1>
+    <form action="/movies">
+        <input type="search" name="titleFilter"/>
+        <input type="submit" value="Поиск" class="btn btn-primary"/>
+    </form>
+    <div>
         <a href="movies/create" class="btn btn-primary">Create New</a>
-    </p>
+    </div>
 </div>
 
-<QuickGrid Class="table" Items="context.Movie">
+<QuickGrid Class="table" Items="FilteredMovies">
     <PropertyColumn Sortable=true Property="movie => movie.Title" />
     <PropertyColumn Sortable=true Property="movie => movie.ReleaseDate" />
     @* <PropertyColumn Property="movie => movie.URL" /> *@
@@ -29,8 +33,12 @@
     </TemplateColumn>
 </QuickGrid>
 
-@code {
+@code 
+{
     private MoviesContext context = default!;
+
+    [SupplyParameterFromQuery]
+    string? TitleFilter { get; set; }
 
     protected override void OnInitialized()
     {
@@ -38,4 +46,6 @@
     }
 
     public async ValueTask DisposeAsync() => await context.DisposeAsync();
+    IQueryable<Movie> FilteredMovies =>
+        context.Movie.Where(m => m.Title.Contains(TitleFilter ?? string.Empty));
 }
