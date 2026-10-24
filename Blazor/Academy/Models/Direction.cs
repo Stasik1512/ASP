@@ -4,9 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Academy.Models
 {
-    public class Directions
+    public class Direction
     {
-        public byte direction_id { get; set; }
+        [Key]
+        [Column("direction_id", TypeName="TINYINT")]
+        public int direction_id { get; set; }
         public string direction_name { get; set; }
 
     }
