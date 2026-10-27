@@ -15,9 +15,11 @@ namespace Academy.Models
         
         [Required]
         [Column("direction", TypeName ="TINYINT")]
+        [ForeignKey(nameof(Direction))]
         public int direction { get; set; }
 
 
+        [DisplayFormat(DataFormatString = "{0:yyyy.MM.dd}")]
         [Column("start_date", TypeName="DATE")]
         public DateOnly? start_date { get; set; }
 
@@ -29,5 +31,9 @@ namespace Academy.Models
         [Column("learning_days", TypeName="TINYINT")]
         public int? learning_days { get; set; }
 
+
+        //  Navigation properties
+
+        public Direction Direction { get; set; }
     }
 }
