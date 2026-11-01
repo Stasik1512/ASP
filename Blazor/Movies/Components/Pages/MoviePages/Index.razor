@@ -20,18 +20,23 @@
     </div>
 </div>
 
-<QuickGrid Class="table" Items="FilteredMovies">
-    <PropertyColumn Sortable=true Property="movie => movie.Title" />
+<QuickGrid Class="table" Items="FilteredMovies" Pagination="pagination">
+    @* <PropertyColumn Sortable=true Property="movie => movie.Title" /> *@
+	<TemplateColumn Context="movie" Title ="Movie" Sortable="true" SortBy="sortBy">
+        <a href="@($"movies/details?id={movie.Id}")">@movie.Title</a>
+
+	</TemplateColumn>
     <PropertyColumn Sortable=true Property="movie => movie.ReleaseDate" />
     @* <PropertyColumn Property="movie => movie.URL" /> *@
     @* <PropertyColumn Property="movie => movie.Poster" /> *@
 
-    <TemplateColumn Context="movie">
+    @* <TemplateColumn Context="movie">
         <a href="@($"movies/edit?id={movie.Id}")">Edit</a> |
         <a href="@($"movies/details?id={movie.Id}")">Details</a> |
         <a href="@($"movies/delete?id={movie.Id}")">Delete</a>
-    </TemplateColumn>
+    </TemplateColumn> *@
 </QuickGrid>
+<Paginator State="pagination" />
 
 @code 
 {
@@ -39,6 +44,9 @@
 
     [SupplyParameterFromQuery]
     string? TitleFilter { get; set; }
+
+    GridSort<Movie> sortBy = GridSort<Movie>.ByAscending(m => m.Title);
+    PaginationState pagination = new PaginationState { ItemsPerPage = 5 };
 
     protected override void OnInitialized()
     {
