@@ -9,3 +9,16 @@
 		width:48PX;
 		text-align:right;
 	}
+
+::deep .movie-title
+{
+	width:70%
+}
+::deep .release-date
+{
+	width:30%
+}
+.table-container
+{
+	height:80vh;
+}
