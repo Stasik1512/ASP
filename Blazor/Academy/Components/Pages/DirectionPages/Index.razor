@@ -5,6 +5,7 @@
 @implements IAsyncDisposable
 @inject IDbContextFactory<AcademyContext> DbFactory
 @inject NavigationManager NavigationManager
+@rendermode InteractiveServer
 
 <PageTitle>Index</PageTitle>
 
@@ -17,7 +18,12 @@
 </div>
 
 <QuickGrid Class="table" Items="context.Directions">
+
+    <TemplateColumn Context="direction_name" Title="Direction name" SortBy="sortBy" Sortable="true">          @* //////////// *@
     <PropertyColumn Property="direction => direction.direction_name" />
+        <a href="@($"movies/detail?id={direction_name.direction_id}")">@direction_name.direction_name</a>    
+    </TemplateColumn> 
+
 
     <TemplateColumn Context="direction">
         <a href="@($"directions/edit?direction_id={direction.direction_id}")">Edit</a> |
@@ -26,8 +32,12 @@
     </TemplateColumn>
 </QuickGrid>
 
-@code {
+@code 
+{
     private AcademyContext context = default!;
+
+    GridSort<Direction> sortBy = GridSort<Direction>.ByAscending(d => d.direction_name);    ///////////////////
+    PaginationState pagination = new PaginationState { ItemsPerPage = 5 };                  ///////////////////
 
     protected override void OnInitialized()
     {
