@@ -17,19 +17,20 @@
     </div>
 </div>
 
-<QuickGrid Class="table" Items="context.Directions">
+<QuickGrid Class="table" Items="context.Directions.Include(d => d.Groups)">
 
-    <TemplateColumn Context="direction_name" Title="Direction name" SortBy="sortBy" Sortable="true">          @* //////////// *@
-    <PropertyColumn Property="direction => direction.direction_name" />
-        <a href="@($"movies/detail?id={direction_name.direction_id}")">@direction_name.direction_name</a>    
+    @* <PropertyColumn Property="direction => direction.direction_name" /> *@
+	<TemplateColumn Context="direction" Title="Direction name" Sortable="true" SortBy="sortBy">
+		@* //////////// *@
+        <a href="@($"direction/detail?id={direction.direction_id}")">@direction.direction_name</a>    
     </TemplateColumn> 
+    <PropertyColumn Property="direction => direction.Groups.Count" Sortable="true"/>
 
-
-    <TemplateColumn Context="direction">
+    @* <TemplateColumn Context="direction">
         <a href="@($"directions/edit?direction_id={direction.direction_id}")">Edit</a> |
         <a href="@($"directions/details?direction_id={direction.direction_id}")">Details</a> |
         <a href="@($"directions/delete?direction_id={direction.direction_id}")">Delete</a>
-    </TemplateColumn>
+    </TemplateColumn> *@
 </QuickGrid>
 
 @code 

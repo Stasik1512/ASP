@@ -32,7 +32,7 @@ namespace Acadamy.Models
         public DateOnly birth_date { get; set; }
         public string? email { get; set; }
         public string? phone { get; set; }
-        public byte[] photo { get; set; }
+        public byte[]? photo { get; set; }
 
         
     }
