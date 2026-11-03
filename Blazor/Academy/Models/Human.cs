@@ -34,6 +34,15 @@ namespace Acadamy.Models
         public string? phone { get; set; }
         public byte[]? photo { get; set; }
 
+        // Calculate properties:
+
+        public string full_name
+        {
+            get => $"{last_name} {first_name} {middle_name}";
+        }
+
+
+
         
     }
 }
