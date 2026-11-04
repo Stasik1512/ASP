@@ -1,0 +1,27 @@
+﻿.controls, .controls > div
+{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+	.controls select
+	{
+		width: 48px;
+		text-align: right;
+	}
+
+::deep .group-title
+{
+	width: 70%
+}
+
+::deep .release-date
+{
+	width: 30%
+}
+
+.table-container
+{
+	height: 775px;
+}

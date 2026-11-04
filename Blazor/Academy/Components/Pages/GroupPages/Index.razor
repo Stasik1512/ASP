@@ -10,28 +10,55 @@
 
 <div class="controls">
     <h1>Группы</h1>
+    <form action="/groups">
+        <input type="search" name="titleFilter" />
+        <input type="submit" value="Поиск" class="btn btn-primary" />
+    </form>
+    <div>
+        <label for="items-per-page">
+            Items per page:
+        </label>
 
+        <select id="items-per-page" @bind="pagination.ItemsPerPage" class="form-control">
+            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="8">8</option>
+            <option value="12">12</option>
+        </select>
+    </div>
     <div>
         <a href="groups/create" class="btn btn-primary">Добавить</a>
     </div>
 </div>
 
-<QuickGrid Class="table" Items="context.Groups.Include(g => g.Direction)">
-    <PropertyColumn Property="group => group.group_name" />
-    <PropertyColumn Property="group => group.start_date" />
-    <PropertyColumn Property="group => group.start_time" />
-    <PropertyColumn Property="group => new Week((int)(group.learning_days ?? 0))" />
-    <PropertyColumn Property="group => group.Direction.direction_name" />
+<div class="table-container">
+    <QuickGrid Class="table" Items="FilteredGroup" Pagination="pagination">
 
-    <TemplateColumn Context="group">
-		@*< a href="@($"groups/edit?group_id={group.group_id}")">Edit</a> | *@
-        <a href="@($"groups/details?group_id={group.group_id}")">Details</a> 
-        @* <a href="@($"groups/delete?group_id={group.group_id}")">Delete</a> *@
-    </TemplateColumn>
-</QuickGrid>
+        <PropertyColumn Property="group => group.group_name" />
+        <PropertyColumn Property="group => group.start_date" />
+        <PropertyColumn Property="group => group.start_time" />
+        <PropertyColumn Property="group => new Week((int)(group.learning_days ?? 0))" />
+        <PropertyColumn Property="group => group.Direction.direction_name" />
 
-@code {
+        <TemplateColumn Context="group">
+            @*< a href="@($"groups/edit?group_id={group.group_id}")">Edit</a> | *@
+            <a href="@($"groups/details?group_id={group.group_id}")">Details</a>
+            @* <a href="@($"groups/delete?group_id={group.group_id}")">Delete</a> *@
+        </TemplateColumn>
+    </QuickGrid>
+</div>
+<Paginator State="pagination" />
+
+@code 
+{
     private AcademyContext context = default!;
+
+    [SupplyParameterFromQuery]
+    string? TitleFilter { get; set; }
+
+    GridSort<Group> sortBy = GridSort<Group>.ByAscending(g => g.group_name);
+
+    PaginationState pagination = new PaginationState { ItemsPerPage = 5 };
 
     protected override void OnInitialized()
     {
@@ -39,4 +66,8 @@
     }
 
     public async ValueTask DisposeAsync() => await context.DisposeAsync();
+
+    IQueryable<Group> FilteredGroup => 
+        context.Groups.Include(g => g.Direction).Where(g => g.group_name.Contains(TitleFilter ?? string.Empty));
 }
+

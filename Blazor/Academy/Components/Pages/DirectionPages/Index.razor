@@ -1,44 +1,74 @@
 @page "/directions"
+@rendermode InteractiveServer
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using Microsoft.EntityFrameworkCore
 @using Academy.Models
 @implements IAsyncDisposable
 @inject IDbContextFactory<AcademyContext> DbFactory
 @inject NavigationManager NavigationManager
-@rendermode InteractiveServer
 
 <PageTitle>Index</PageTitle>
 
 <div class="controls">
     <h1>Направления обучения (@context.Directions.Count())</h1>
 
+    @*Поиск по стр*@
+    <form action="/directions">
+        <input type="search" name="titleFilter"/>
+        <input type="submit" value="Поиск" class="btn btn-primary"/>
+    </form>
+
+    <div>
+        <label for="items-per-page">
+            Items per page:
+        </label>
+
+        <select id="items-per-page" @bind="pagination.ItemsPerPage" class="form-control">
+            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="8">8</option>
+            <option value="12">12</option>
+        </select>
+    </div>
+
     <div>
         <a href="directions/create" class="btn btn-primary">Добавить</a>
     </div>
 </div>
 
-<QuickGrid Class="table" Items="context.Directions.Include(d => d.Groups)">
 
-    @* <PropertyColumn Property="direction => direction.direction_name" /> *@
-	<TemplateColumn Context="direction" Title="Direction name" Sortable="true" SortBy="sortBy">
-		@* //////////// *@
-        <a href="@($"direction/detail?id={direction.direction_id}")">@direction.direction_name</a>    
-    </TemplateColumn> 
-    <PropertyColumn Property="direction => direction.Groups.Count" Sortable="true"/>
+<div class="table-container">
+    <QuickGrid Class="table" Items="context.Directions.Include(d => d.Groups)" Pagination="pagination">
 
-    @* <TemplateColumn Context="direction">
+
+        <TemplateColumn Context="direction" Title="Direction name" Sortable="true" SortBy="sortBy" Class="direction-title">
+            <a href="@($"direction/detail?id={direction.direction_id}")">@direction.direction_name</a>
+        </TemplateColumn>
+
+        <PropertyColumn Property="direction => direction.Groups.Count" Sortable="true" Class="release-date" />
+
+        @*
+        <TemplateColumn Context="direction">
         <a href="@($"directions/edit?direction_id={direction.direction_id}")">Edit</a> |
         <a href="@($"directions/details?direction_id={direction.direction_id}")">Details</a> |
         <a href="@($"directions/delete?direction_id={direction.direction_id}")">Delete</a>
-    </TemplateColumn> *@
-</QuickGrid>
+        </TemplateColumn>
+        *@
+
+    </QuickGrid>
+</div>
+<Paginator State="pagination" />
 
 @code 
 {
     private AcademyContext context = default!;
 
-    GridSort<Direction> sortBy = GridSort<Direction>.ByAscending(d => d.direction_name);    ///////////////////
-    PaginationState pagination = new PaginationState { ItemsPerPage = 5 };                  ///////////////////
+    [SupplyParameterFromQuery]
+    string? TitleFilter { get; set; }
+
+    GridSort<Direction> sortBy = GridSort<Direction>.ByAscending(d => d.direction_name); 
+
+    PaginationState pagination = new PaginationState { ItemsPerPage = 5 };                  
 
     protected override void OnInitialized()
     {
@@ -46,4 +76,8 @@
     }
 
     public async ValueTask DisposeAsync() => await context.DisposeAsync();
+
+    //Относится к поиску
+    IQueryable<Direction> FilteredDirections =>
+        context.Directions.Where(d => d.direction_name.Contains(TitleFilter ?? string.Empty));
 }
