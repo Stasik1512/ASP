@@ -38,22 +38,25 @@
 
 
 <div class="table-container">
-    <QuickGrid Class="table" Items="context.Directions.Include(d => d.Groups)" Pagination="pagination">
+    <QuickGrid Class="table" Items="context.Directions.Include(d => d.Groups).ThenInclude(g => g.Students)" Pagination="pagination">
 
+        <PropertyColumn Sortable="true" Property="direction => direction.direction_name" />
+        <PropertyColumn Sortable="true" Property="direction => direction.Groups.Count" Title="Group count"/>
+        <PropertyColumn Sortable="true" Property="direction => direction.Groups.Sum(g => g.Students.Count )" Title="Students count" />
 
-        <TemplateColumn Context="direction" Title="Direction name" Sortable="true" SortBy="sortBy" Class="direction-title">
-            <a href="@($"direction/detail?id={direction.direction_id}")">@direction.direction_name</a>
-        </TemplateColumn>
+        @* <TemplateColumn Context="direction" Title="Direction name" Sortable="true" SortBy="sortBy" Class="direction-title">
+            <a href="@($"directions/details?direction_id={direction.direction_id}")">@direction.direction_name</a>
+        </TemplateColumn> *@
 
         <PropertyColumn Property="direction => direction.Groups.Count" Sortable="true" Class="release-date" />
 
-        @*
+        
         <TemplateColumn Context="direction">
-        <a href="@($"directions/edit?direction_id={direction.direction_id}")">Edit</a> |
-        <a href="@($"directions/details?direction_id={direction.direction_id}")">Details</a> |
-        <a href="@($"directions/delete?direction_id={direction.direction_id}")">Delete</a>
+        @* <a href="@($"directions/edit?direction_id={direction.direction_id}")">Edit</a> | *@
+        <a href="@($"directions/details?direction_id={direction.direction_id}")">Details</a>
+        @* <a href="@($"directions/delete?direction_id={direction.direction_id}")">Delete</a> *@
         </TemplateColumn>
-        *@
+       
 
     </QuickGrid>
 </div>

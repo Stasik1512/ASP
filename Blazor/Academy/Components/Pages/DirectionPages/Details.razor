@@ -3,7 +3,7 @@
 @using Academy.Models
 @inject IDbContextFactory<AcademyContext> DbFactory
 @inject NavigationManager NavigationManager
-
+@using Microsoft.AspNetCore.Components.QuickGrid;
 <PageTitle>Details</PageTitle>
 
 @* <h1>Details</h1> *@
@@ -23,9 +23,19 @@
         </div>
         <hr />
         <dl class="row">
-            <dt class="col-sm-2">direction_name</dt>
-            <dd class="col-sm-10">@direction.direction_name</dd>
+            @* <dt class="col-sm-2">direction_name</dt>                     <dd class="col-sm-10">@direction.direction_name</dd> *@
+            <dt class="col-sm-2">Колиичество групп</dt>                     <dd class="col-sm-10">@direction.Groups.Count</dd>
+            <dt class="col-sm-2">Колиичество студентов</dt>                 <dd class="col-sm-10">@direction.Groups.Sum(g => g.Students.Count)</dd>
         </dl>
+
+        <QuickGrid Items="direction.Groups.AsQueryable()" Class="table">
+           <PropertyColumn Property="group => group.group_name"/>
+           <PropertyColumn Property="group => group.start_time"/>
+           <PropertyColumn Property="group => group.start_date"/>
+           <PropertyColumn Property="group => group.learning_days"/>
+        </QuickGrid>
+
+
        @*  <div>
             <a href="@($"/directions")">Back to List</a>
         </div> *@
@@ -41,7 +51,7 @@
     protected override async Task OnInitializedAsync()
     {
         using var context = DbFactory.CreateDbContext();
-        direction = await context.Directions.FirstOrDefaultAsync(m => m.direction_id == direction_id);
+        direction = await context.Directions.Include(d => d.Groups).ThenInclude(g => g.Students).FirstOrDefaultAsync(m => m.direction_id == direction_id);
 
         if (direction is null)
         {
