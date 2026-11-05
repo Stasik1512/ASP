@@ -1,4 +1,5 @@
 @page "/groups"
+@rendermode InteractiveServer
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using Microsoft.EntityFrameworkCore
 @using Academy.Models
@@ -34,11 +35,17 @@
 <div class="table-container">
     <QuickGrid Class="table" Items="FilteredGroup" Pagination="pagination">
 
-        <PropertyColumn Property="group => group.group_name" />
-        <PropertyColumn Property="group => group.start_date" />
-        <PropertyColumn Property="group => group.start_time" />
-        <PropertyColumn Property="group => new Week((int)(group.learning_days ?? 0))" />
+        <PropertyColumn Property="group => group.group_name" Sortable="true" />
+        <PropertyColumn Property="group => group.Students.Count" Sortable="true" />
+        <PropertyColumn Property="group => group.start_date" Sortable="true" />
+        <PropertyColumn Property="group => group.start_time" Sortable="true" />
+        @* <PropertyColumn Property="group => new Week((int)(group.learning_days ?? 0))" Sortable="true" /> *@
         <PropertyColumn Property="group => group.Direction.direction_name" />
+
+        <TemplateColumn Context="group" Title="Учебные дни" Sortable="true" SortBy="sortByLearningDays">
+            @(new Week((int)(group.learning_days ?? 0)))
+         </TemplateColumn>
+
 
         <TemplateColumn Context="group">
             @*< a href="@($"groups/edit?group_id={group.group_id}")">Edit</a> | *@
@@ -57,7 +64,7 @@
     string? TitleFilter { get; set; }
 
     GridSort<Group> sortBy = GridSort<Group>.ByAscending(g => g.group_name);
-
+    GridSort<Group> sortByLearningDays = GridSort<Group>.ByAscending(g => g.learning_days);
     PaginationState pagination = new PaginationState { ItemsPerPage = 5 };
 
     protected override void OnInitialized()
@@ -68,6 +75,7 @@
     public async ValueTask DisposeAsync() => await context.DisposeAsync();
 
     IQueryable<Group> FilteredGroup => 
-        context.Groups.Include(g => g.Direction).Where(g => g.group_name.Contains(TitleFilter ?? string.Empty));
+        context.Groups.Include(g => g.Students)
+                        .Include(g => g.Direction).Where(g => g.group_name.Contains(TitleFilter ?? string.Empty));
 }
 

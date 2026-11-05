@@ -40,9 +40,12 @@ namespace Acadamy.Models
         {
             get => $"{last_name} {first_name} {middle_name}";
         }
-
-
-
         
+        public int age
+        {
+            get => (int)((DateTime.Now.Date - birth_date.ToDateTime(new TimeOnly(0)).Date).Days / 365.25);
+        }
+
+
     }
 }
