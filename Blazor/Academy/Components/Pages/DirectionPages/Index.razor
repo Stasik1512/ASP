@@ -38,7 +38,8 @@
 
 
 <div class="table-container">
-    <QuickGrid Class="table" Items="context.Directions.Include(d => d.Groups).ThenInclude(g => g.Students)" Pagination="pagination">
+    @* <QuickGrid Class="table" Items="context.Directions.Include(d => d.Groups).ThenInclude(g => g.Students)" Pagination="pagination"> *@
+    <QuickGrid Class="table" Items="FilteredDirections" Pagination="pagination">
 
         <PropertyColumn Sortable="true" Property="direction => direction.direction_name" />
         <PropertyColumn Sortable="true" Property="direction => direction.Groups.Count" Title="Group count"/>
@@ -82,5 +83,5 @@
 
     //Относится к поиску
     IQueryable<Direction> FilteredDirections =>
-        context.Directions.Where(d => d.direction_name.Contains(TitleFilter ?? string.Empty));
+        context.Directions.Include(d => d.Groups).ThenInclude(g => g.Students).Where(d => d.direction_name.Contains(TitleFilter ?? string.Empty));
 }

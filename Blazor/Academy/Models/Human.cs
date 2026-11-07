@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace Acadamy.Models
+namespace Academy.Models
 {
     public class Human
     {
