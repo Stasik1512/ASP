@@ -24,13 +24,17 @@
     <PropertyColumn Property="student => student.middle_name" /> 
     *@
     @* <PropertyColumn Property="student => student.full_name" Title="Студент" Sortable="true"/> *@
+
     <TemplateColumn Context="Student" Title="Студент" Sortable="true" SortBy="sortBy">
         <a href=@($"/Students/details?stud_id={Student.stud_id}")>@Student.full_name</a>
     </TemplateColumn>
+
     <PropertyColumn Property="student => student.birth_date" Sortable="true" />
+
     <TemplateColumn Context="student" Title="Age" Sortable="true" SortBy="@sortByBirthDate">
         @student.age
     </TemplateColumn>
+
     <PropertyColumn Property="student => student.Group.group_name" Sortable="true" />
     <PropertyColumn Property="student => student.Group.Direction.direction_name"/>
     @*    
@@ -46,7 +50,8 @@
     </TemplateColumn> *@
 </QuickGrid>
 
-@code {
+@code 
+{
     private AcademyContext context = default!;
 
     GridSort<Student> sortBy = GridSort<Student>.ByAscending(s => s.last_name);
