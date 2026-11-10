@@ -26,11 +26,11 @@
         <a href=@($"Teachers/details?teacher_id={Teacher.teacher_id}")>@Teacher.full_name</a>
     </TemplateColumn>
 
-    <PropertyColumn Property="teacher => teacher.birth_date" Title="Birth_date"/>
+    <PropertyColumn Property="teacher => teacher.birth_date" Title="Birth_date" Sortable="true"/>
     @* <PropertyColumn Property="teacher => teacher.direction"/> *@
 
-    <PropertyColumn Property="teacher => teacher.work_since" />
-    <PropertyColumn Property="teacher => teacher.rate" />
+    <PropertyColumn Property="teacher => teacher.work_since" Sortable="true"/>
+    <PropertyColumn Property="teacher => teacher.rate" Sortable="true" />
 
     @* <PropertyColumn Property="teacher => teacher.email" />
     <PropertyColumn Property="teacher => teacher.phone" />
