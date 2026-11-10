@@ -13,8 +13,16 @@ namespace Academy.Models
 		public int teacher_id { get; set; }
 
 		public DateOnly work_since { get; set; }
-		
+
 		[Column(TypeName = "SMALLMONEY")]
 		public int rate { get; set; }
+
+		//Calculateted properties:
+		public int experience
+		{
+			get => (int)((DateTime.Now.Date - work_since.ToDateTime(new TimeOnly(0)).Date).Days / 365.25);
+
+		}
+
 	}
 }

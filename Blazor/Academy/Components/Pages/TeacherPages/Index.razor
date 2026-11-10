@@ -29,7 +29,10 @@
     <PropertyColumn Property="teacher => teacher.birth_date" Title="Birth_date" Sortable="true"/>
     @* <PropertyColumn Property="teacher => teacher.direction"/> *@
 
-    <PropertyColumn Property="teacher => teacher.work_since" Sortable="true"/>
+    @* <PropertyColumn Property="teacher => teacher.work_since" Sortable="true"/> *@
+    <TemplateColumn Context="teacher" Title="Опыт преподавания" Sortable=true SortBy="sortBy">  @* SortBy="GridShort<Teacher>.ByDescending(t => t.work_since)" *@
+        @teacher.experience
+    </TemplateColumn>
     <PropertyColumn Property="teacher => teacher.rate" Sortable="true" />
 
     @* <PropertyColumn Property="teacher => teacher.email" />
@@ -37,11 +40,11 @@
     <PropertyColumn Property="teacher => teacher.photo" /> *@
     
 
-    <TemplateColumn Context="teacher">
+    @* <TemplateColumn Context="teacher">
         <a href="@($"teachers/edit?teacher_id={teacher.teacher_id}")">Edit</a> |
         <a href="@($"teachers/details?teacher_id={teacher.teacher_id}")">Details</a> |
         <a href="@($"teachers/delete?teacher_id={teacher.teacher_id}")">Delete</a>
-    </TemplateColumn>
+    </TemplateColumn> *@
 </QuickGrid>
 
 @code 
