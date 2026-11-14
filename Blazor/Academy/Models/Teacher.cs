@@ -1,4 +1,5 @@
 ﻿using Academy.Models;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -24,5 +25,8 @@ namespace Academy.Models
 
 		}
 
-	}
+        // Navigation
+
+        public ObservableCollection<TeachersDisciplinesRelation> TDR { get; set; }
+    }
 }
