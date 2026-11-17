@@ -26,10 +26,22 @@
             <a href="@($"/disciplines/edit?discipline_id={discipline.discipline_id}")">Edit</a> |
             <a href="@($"/disciplines")">Back to List</a>
         </div>
+        @if(discipline.DependentDisciplines != null)
+        {
+            <ul>
+                @foreach(DependentDisciplines dd in discipline.DependentDisciplines)
+                {
+                    <li>@dd.DependentDispline.discipline_name</li>
+                }
+            </ul>
+        }
+        <hr />
+
     }
 </div>
 
-@code {
+@code 
+{
     private Discipline? discipline;
 
     [SupplyParameterFromQuery]
@@ -38,7 +50,13 @@
     protected override async Task OnInitializedAsync()
     {
         using var context = DbFactory.CreateDbContext();
-        discipline = await context.Disciplines.FirstOrDefaultAsync(m => m.discipline_id == discipline_id);
+        discipline = await context.Disciplines
+                                                .Include(d => d.TDR)
+                                                    .ThenInclude( tdr => tdr.Teacher)
+                                                .Include(d => d.DependentDisciplines)
+                                                    .ThenInclude(dd => dd.DependentDispline)
+                                                .FirstOrDefaultAsync(m => m.discipline_id == discipline_id);
+                                                
 
         if (discipline is null)
         {
