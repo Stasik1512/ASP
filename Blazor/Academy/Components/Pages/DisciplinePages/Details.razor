@@ -26,15 +26,32 @@
             <a href="@($"/disciplines/edit?discipline_id={discipline.discipline_id}")">Edit</a> |
             <a href="@($"/disciplines")">Back to List</a>
         </div>
-        @if(discipline.DependentDisciplines != null)
-        {
-            <ul>
-                @foreach(DependentDisciplines dd in discipline.DependentDisciplines)
+        <div class="adjacent-disciplines">
+            <div>
+                <h5>Требуемые дисциплины</h5>
+                @if(discipline.RequiredDisciplines != null)
                 {
-                    <li>@dd.DependentDispline.discipline_name</li>
+                    <ul>
+                        @foreach(RequiredDisciplines rd in discipline.RequiredDisciplines)
+                        {
+                            <li>@rd.RequiredDiscipline.discipline_name</li>
+                        }
+                    </ul>
                 }
-            </ul>
-        }
+            </div>
+            <div>
+                <h5>Зависимые дисципллины</h5>
+                @if(discipline.DependentDisciplines != null)
+                {
+                    <ul>
+                        @foreach(DependentDisciplines dd in discipline.DependentDisciplines)
+                        {
+                            <li>@dd.DependentDispline.discipline_name</li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
         <hr />
 
     }
@@ -55,6 +72,8 @@
                                                     .ThenInclude( tdr => tdr.Teacher)
                                                 .Include(d => d.DependentDisciplines)
                                                     .ThenInclude(dd => dd.DependentDispline)
+                                                .Include(d => d.RequiredDisciplines)
+                                                    .ThenInclude(rd => rd.RequiredDiscipline)
                                                 .FirstOrDefaultAsync(m => m.discipline_id == discipline_id);
                                                 
 
