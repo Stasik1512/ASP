@@ -27,6 +27,6 @@ namespace Academy.Models
 
         // Navigation
 
-        public ObservableCollection<TeachersDisciplinesRelation> TDR { get; set; }
+        public ICollection<TeachersDisciplinesRelation> TDR { get; set; }
     }
 }
