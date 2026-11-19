@@ -8,20 +8,22 @@
 
 <PageTitle>Index</PageTitle>
 
-<h1>Index</h1>
+<div class="controls">
+    <h1>Дисциплины</h1>
 
-<p>
-    <a href="disciplines/create">Create New</a>
-</p>
+    <p>
+        <a href="disciplines/create" class="btn btn-primary">Создать</a>
+    </p>
+</div>
 
 <QuickGrid Class="table" Items="context.Disciplines">
-    <PropertyColumn Property="discipline => discipline.discipline_name" />
-    <PropertyColumn Property="discipline => discipline.number_of_lessons" />
+    <PropertyColumn Property="discipline => discipline.discipline_name"     Sortable="true"/>
+    <PropertyColumn Property="discipline => discipline.number_of_lessons"   Sortable="true"/>
 
     <TemplateColumn Context="discipline">
-        <a href="@($"disciplines/edit?discipline_id={discipline.discipline_id}")">Edit</a> |
-        <a href="@($"disciplines/details?discipline_id={discipline.discipline_id}")">Details</a> |
-        <a href="@($"disciplines/delete?discipline_id={discipline.discipline_id}")">Delete</a>
+        @* <a href="@($"disciplines/edit?discipline_id={discipline.discipline_id}")">Edit</a> | *@
+        <a href="@($"disciplines/details?discipline_id={discipline.discipline_id}")">Details</a> 
+        @* <a href="@($"disciplines/delete?discipline_id={discipline.discipline_id}")">Delete</a> *@
     </TemplateColumn>
 </QuickGrid>
 
