@@ -20,8 +20,8 @@
         <div class="controls">
             <h1>@discipline.discipline_name</h1>
             <a href="@($"/disciplines/edit?discipline_id={discipline.discipline_id}")" class="btn btn-primary">Edit</a>
-            <hr />
         </div>
+        <hr />
 
         <dl class="row">
             <dt class="col-sm-2">discipline_name</dt>           <dd class="col-sm-10">@discipline.discipline_name</dd>
@@ -30,6 +30,13 @@
         <div>
             @* <a href="@($"/disciplines")">Back to List</a> *@
         </div>
+        <h3>Преподаватели @(discipline.TDR.Count)</h3>
+        <ul>
+            @foreach(TeachersDisciplinesRelation tdr in discipline.TDR)
+            {
+                <h5><li>@tdr.Teacher.full_name</li></h5>
+            }
+        </ul>
         <div class="adjacent-disciplines">
             <div>
                 <h5>Требуемые дисциплины</h5>
