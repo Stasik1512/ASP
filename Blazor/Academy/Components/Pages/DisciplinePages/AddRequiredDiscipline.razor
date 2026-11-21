@@ -23,7 +23,7 @@
             ) continue;
             <option value="@d.discipline_id">@d.discipline_name</option>
         }
-    </InputSelect>
+    </InputSelect> 
     <button type="button" @onclick="AddDiscipline">Добавить</button>
     <li>
         @foreach(DependentDisciplines rd in requiredDisciplines)
