@@ -23,7 +23,12 @@ public class AcademyContext(DbContextOptions<AcademyContext> options) : DbContex
 
         modelBuilder.Entity<Discipline>()
             .HasMany(d => d.RequiredDisciplines)
-            .WithOne(rd => rd.Discipline)
-            .HasForeignKey(rd => rd.discipline);
+            .WithOne(dd => dd.DependentDispline)
+            .HasForeignKey(dd => dd.dependent_discipline);
+
+        //modelBuilder.Entity<Discipline>()
+        //    .HasMany(d => d.RequiredDisciplines)
+        //    .WithOne(rd => rd.Discipline)
+        //    .HasForeignKey(rd => rd.discipline);
     }
 }

@@ -24,6 +24,7 @@
         <hr />
 
         <dl class="row">
+            <dt class="col-sm-2">discipline_id</dt>           <dd class="col-sm-10">@discipline.discipline_id</dd>
             <dt class="col-sm-2">discipline_name</dt>           <dd class="col-sm-10">@discipline.discipline_name</dd>
             <dt class="col-sm-2">number_of_lessons</dt>         <dd class="col-sm-10">@discipline.number_of_lessons</dd>
         </dl>
@@ -38,7 +39,7 @@
             }
         </ul>
         <div class="adjacent-disciplines">
-            <div>
+            @* <div>
                 <h5>Требуемые дисциплины</h5>
                 @if(discipline.RequiredDisciplines != null)
                 {
@@ -46,6 +47,18 @@
                         @foreach(RequiredDisciplines rd in discipline.RequiredDisciplines)
                         {
                             <li>@rd.RequiredDiscipline.discipline_name</li>
+                        }
+                    </ul>
+                }
+            </div> *@
+            <div>
+                <h5>Требуемые дисципллины</h5>
+                @if(discipline.DependentDisciplines != null)
+                {
+                    <ul>
+                        @foreach(DependentDisciplines rd in discipline.RequiredDisciplines)
+                        {
+                            <li>@rd.Discipline.discipline_name</li>
                         }
                     </ul>
                 }
@@ -75,6 +88,7 @@
     [SupplyParameterFromQuery]
     private int discipline_id { get; set; }
 
+    //List<Discipline> requiredDisciplines = default;
     protected override async Task OnInitializedAsync()
     {
         using var context = DbFactory.CreateDbContext();
@@ -84,8 +98,9 @@
                                                 .Include(d => d.DependentDisciplines)
                                                     .ThenInclude(dd => dd.DependentDispline)
                                                 .Include(d => d.RequiredDisciplines)
-                                                    .ThenInclude(rd => rd.RequiredDiscipline)
+                                                    .ThenInclude(rd => rd.Discipline)
                                                 .FirstOrDefaultAsync(m => m.discipline_id == discipline_id);
+                                                
                                                 
 
         if (discipline is null)
