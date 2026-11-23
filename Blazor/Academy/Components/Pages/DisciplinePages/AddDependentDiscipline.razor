@@ -1,0 +1,31 @@
+﻿@using Academy.Models;
+@using Microsoft.EntityFrameworkCore;
+@inject IDbContextFactory<AcademyContext> DbFactory;
+
+
+<h3>AddDependentDiscipline</h3>
+<form>
+    <InputSelect @bind-Value="discipline" class="form-control"> 
+        <option disabled value="-1">--- Выберите дисциплину ---</option>
+        @foreach(Discipline d in disciplines)
+        {
+            <option value="@d.discipline_id">@d.discipline_name</option>
+        }
+    </InputSelect>
+</form>
+@code 
+{
+    [Parameter]
+    public Discipline Discipline { get; set; }
+
+    List<Discipline> disciplines;
+    List<DependentDisciplines> dependentDisciplines = new List<DependentDisciplines>();
+
+    int discipline = -1;
+
+    protected override void OnInitialized()
+    {
+        disciplines = DbFactory.CreateDbContext().Disciplines.ToList();
+
+    }
+}
