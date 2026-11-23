@@ -7,19 +7,14 @@
 
 
 <form>
-    <InputSelect @bind-Value="discipline">
-        <option disabled value="-1">---Выберите дисциплину---</option>
+    <InputSelect @bind-Value="discipline" class="form-control">
+        <option disabled value="-1">--- Выберите дисциплину ---</option>
         @foreach(Discipline d in disciplines) 
         {
-            if 
-            (
-                Discipline.RequiredDisciplines.Contains(
-                    new DependentDisciplines
-                    {
-                        discipline = d.discipline_id,
-                        dependent_discipline = Discipline.discipline_id
-                    }
-                )
+        if
+        (
+            Discipline.RequiredDisciplines.Where(rd => rd.discipline == d.discipline_id).Any() ||
+            requiredDisciplines.Where(rd => rd.discipline == d.discipline_id).Any()
             ) continue;
             <option value="@d.discipline_id">@d.discipline_name</option>
         }
