@@ -54,7 +54,9 @@
 
     protected override void OnInitialized()
     {
-        disciplines = DbFactory.CreateDbContext().Disciplines.ToList();
+        disciplines = DbFactory.CreateDbContext().Disciplines
+                                                    .Where(d => d.discipline_id != Discipline.discipline_id)
+                                                    .ToList();
 
     }
     public void AddDiscipline()
