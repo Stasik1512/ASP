@@ -58,7 +58,11 @@
                     <ul>
                         @foreach(DependentDisciplines rd in discipline.RequiredDisciplines)
                         {
-                            <li>@rd.Discipline.discipline_name</li>
+                            <li>
+                                <a href=@($"/Disciplines/details?discipline_id={rd.discipline}")>
+                                    @rd.Discipline.discipline_name
+                                </a>
+                            </li>
                         }
                     </ul>
                 }
@@ -70,7 +74,12 @@
                     <ul>
                         @foreach(DependentDisciplines dd in discipline.DependentDisciplines)
                         {
-                            <li>@dd.DependentDispline.discipline_name</li>
+                            <li>
+                                <a href=@($"/Disciplines/details?discipline_id={dd.dependent_discipline}")>
+                                    @dd.DependentDispline.discipline_name
+                                </a>
+
+                            </li>
                         }
                     </ul>
                 }
