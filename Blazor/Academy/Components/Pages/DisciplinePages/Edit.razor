@@ -1,4 +1,5 @@
 @page "/disciplines/edit"
+@rendermode InteractiveServer
 @using Microsoft.EntityFrameworkCore
 @implements IDisposable
 @using Academy.Models
@@ -20,8 +21,8 @@ else
 {
     <h1>@Discipline.discipline_name</h1>
     <div class="row">
-        <div class="col-md-4">
             <EditForm method="post" Model="Discipline" OnValidSubmit="UpdateDiscipline" FormName="edit" Enhance>
+        <div class="col-md-7">
                 <DataAnnotationsValidator />
                 <ValidationSummary role="alert"/>
                 <input type="hidden" name="Discipline.discipline_id" value="@Discipline.discipline_id" />
@@ -38,8 +39,13 @@ else
                     <ValidationMessage For="() => Discipline.number_of_lessons" class="text-danger" />
                 </div>
                 <button type="submit" class="btn btn-primary">Save</button>
-            </EditForm>
         </div>
+
+        <div class="adjacent-disciplines">
+            <AddRequiredDiscipline  @ref="addRequiredDiscipline"    Discipline="Discipline" />
+            <AddDependentDiscipline @ref="addDependentDiscipline"   Discipline="Discipline" />
+        </div>
+            </EditForm>
     </div>
 }
 
@@ -54,6 +60,9 @@ else
     [SupplyParameterFromForm]
     private Discipline? Discipline { get; set; }
 
+    AddRequiredDiscipline   addRequiredDiscipline;
+    AddDependentDiscipline  addDependentDiscipline;
+
     private PersistingComponentStateSubscription? persistingSubscription;
 
     protected override async Task OnInitializedAsync()
@@ -65,7 +74,12 @@ else
             if (!ApplicationState.TryTakeFromJson<Discipline>(nameof(Discipline), out var restoredDiscipline))
             {
                 using var context = DbFactory.CreateDbContext();
-                Discipline = await context.Disciplines.FirstOrDefaultAsync(m => m.discipline_id == discipline_id);
+                Discipline ??= await context.Disciplines
+                                            .Include(d => d.RequiredDisciplines)
+                                                .ThenInclude(rd => rd.Discipline)
+                                            .Include(d => d.DependentDisciplines)
+                                                .ThenInclude(dd => dd.DependentDispline)
+                                            .FirstOrDefaultAsync(m => m.discipline_id == discipline_id);
             }
             else
             {
@@ -99,6 +113,8 @@ else
 
         try
         {
+            addRequiredDiscipline.Update();
+            addDependentDiscipline.Update();
             await context.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
