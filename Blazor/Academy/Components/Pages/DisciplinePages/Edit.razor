@@ -21,8 +21,8 @@ else
 {
     <h1>@Discipline.discipline_name</h1>
     <div class="row">
-        <div class="col-md-4">
             <EditForm method="post" Model="Discipline" OnValidSubmit="UpdateDiscipline" FormName="edit" Enhance>
+        <div class="col-md-7">
                 <DataAnnotationsValidator />
                 <ValidationSummary role="alert"/>
                 <input type="hidden" name="Discipline.discipline_id" value="@Discipline.discipline_id" />
@@ -39,10 +39,13 @@ else
                     <ValidationMessage For="() => Discipline.number_of_lessons" class="text-danger" />
                 </div>
                 <button type="submit" class="btn btn-primary">Save</button>
-
-                <AddRequiredDiscipline @ref="addRequiredDiscipline"Discipline="Discipline"/>
-            </EditForm>
         </div>
+
+        <div class="adjacent-disciplines">
+            <AddRequiredDiscipline @ref="addRequiredDiscipline" Discipline="Discipline" />
+            <AddDependentDiscipline Discipline="Discipline" />
+        </div>
+            </EditForm>
     </div>
 }
 
@@ -74,6 +77,7 @@ else
                                             .Include(d => d.RequiredDisciplines)
                                                 .ThenInclude(rd => rd.Discipline)
                                             .Include(d => d.DependentDisciplines)
+                                                .ThenInclude(dd => dd.DependentDispline)
                                             .FirstOrDefaultAsync(m => m.discipline_id == discipline_id);
             }
             else

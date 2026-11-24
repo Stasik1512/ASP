@@ -7,4 +7,9 @@
     .adjacent-disciplines > div
     {
         min-width: 45%;
+        margin:16px;
+    }
+    .adjacent-disciplines > div ul
+    {
+        list-style:none;
     }
