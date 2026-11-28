@@ -1,0 +1,58 @@
+﻿@using Academy.Models;
+@using Microsoft.EntityFrameworkCore;
+@inject IDbContextFactory<AcademyContext> DbContextFactory;
+
+<h3>CBdiscipline</h3>
+
+<div class="mb-3">
+    <span class="text-danger">*</span>
+    <label for="discipline" class="form-label">discipline:</label>
+    @* <InputNumber id="discipline" @bind-Value="Lesson.discipline" class="form-control" aria-required="true" />
+    <ValidationMessage For="() => Lesson.discipline" class="text-danger" /> *@
+    <select @bind="discipline" class="form-control" @bind:after="SetDiscipline">
+        @if(Group != null)
+        {
+            <option value="-1">--- Выберите дисциплпину ---</option>
+            @foreach(Discipline discipline in Context.Disciplines)
+            {
+                <option value="@discipline.discipline_id">@discipline.discipline_name</option>
+            }
+        }
+        else
+        {
+            <option value="-2">--- Для начала выберите группу ---</option>
+        }
+    </select>
+</div>
+@code 
+{
+    [Parameter]
+    public Discipline Discipline { get; set; }
+
+    [Parameter]
+    public EventCallback<Discipline> DisciplineChanged { get; set; }
+
+    [Parameter]
+    public Group Group { get; set; }
+
+    [Parameter]
+    public AcademyContext Context { get; set; }
+
+    int discipline = -1;
+
+    protected override void OnParametersSet()
+    {
+        if (discipline < 0) discipline = Group != null ? -1 : -2;
+    }
+    void SetDiscipline()
+    {
+        Discipline = Context.Disciplines
+                                .Include(d => d.TDR)
+                                .ThenInclude(tdr => tdr.Teacher)
+                                .Where(d => d.discipline_id == this.discipline)
+                                .First();
+
+        DisciplineChanged.InvokeAsync(Discipline);
+
+    }
+}

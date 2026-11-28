@@ -15,18 +15,8 @@
         <EditForm method="post" Model="Lesson" OnValidSubmit="AddLesson" FormName="create" Enhance>
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" role="alert"/>
-            <div class="mb-3">
-                <span class="text-danger">*</span>
-                <label for="group" class="form-label">group:</label> 
-                <InputNumber id="group" @bind-Value="Lesson.group" class="form-control" aria-required="true"/> 
-                <ValidationMessage For="() => Lesson.group" class="text-danger" /> 
-            </div>        
-            <div class="mb-3">
-                <span class="text-danger">*</span>
-                <label for="discipline" class="form-label">discipline:</label> 
-                <InputNumber id="discipline" @bind-Value="Lesson.discipline" class="form-control" aria-required="true"/> 
-                <ValidationMessage For="() => Lesson.discipline" class="text-danger" /> 
-            </div>        
+            <CBGroup @bind-Group="Group" Context="this.context"/>
+            <CBdiscipline @bind-Discipline="Discipline" Group="Group" Context="this.context"/>
             <div class="mb-3">
                 <span class="text-danger">*</span>
                 <label for="teacher" class="form-label">teacher:</label> 
@@ -63,7 +53,16 @@
     [SupplyParameterFromForm]
     private Lesson Lesson { get; set; } = default!;
 
-    protected override void OnInitialized() => Lesson ??= new();
+    Group Group { get; set; } = default!;
+    Discipline Discipline { get; set; } = default!;
+    Teacher Teacher { get; set; } = default!;
+
+    AcademyContext context;
+    protected override void OnInitialized()
+    {
+        Lesson ??= new();
+        context = DbFactory.CreateDbContext();
+    }
 
     // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
     private async Task AddLesson()
